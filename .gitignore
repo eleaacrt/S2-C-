@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+
+# fichiers et dossiers
+/build
+.vscode
+
+/TD04/build
+
