@@ -35,5 +35,7 @@
 /build
 .vscode
 
-/TD04/build
+/TD01/build
+/TD01/bin
+/TD01/.vscode
 
