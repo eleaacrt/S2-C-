@@ -28,11 +28,7 @@ endforeach()
 
 
 # On indique que l'on souhaite faire un exécutable avec nos fichiers sources
-add_executable(fraction ${SRC_FILES})
-add_executable(utils ${SRC_FILES})
 add_executable(main ${SRC_FILES})
 
 # le dossier contenant les fichiers d'en-tête pour notre executable helloImac
-target_include_directories(fraction PUBLIC "src/")
-target_include_directories(utils PUBLIC "src/")
 target_include_directories(main PUBLIC "src/")
