@@ -33,6 +33,7 @@
 
 # fichiers et dossiers
 /build
+/bin
 .vscode
 
 /TD01/build
