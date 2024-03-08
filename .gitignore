@@ -32,11 +32,8 @@
 *.app
 
 # fichiers et dossiers
-/build
-/bin
-.vscode
+*/build
+*/bin
+*/.vscode
 
-/TD01/build
-/TD01/bin
-/TD01/.vscode
 
