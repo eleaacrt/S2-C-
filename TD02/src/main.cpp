@@ -144,6 +144,47 @@ void display(std::vector<int> &vec)
     std::cout << " ]" << std::endl;
 }
 
+int search(std::vector<int> &vec, int const value)
+{
+    // on trie le tableau avant d'effectuer une dichotomie pour éviter une erreur
+    std::sort(vec.begin(), vec.end());
+
+    // indice du début et fin du tableau
+    int left = 0;
+    int right = vec.size() - 1;
+
+    // tant que l'indice de début est inférieur à l'indice de fin
+    while (right >= left)
+    {
+        // on déifni l'indice du milieu
+        int middle = (left + right) / 2;
+        int value_middle = vec[middle];
+
+        if (vec[middle] == value)
+        {
+            return middle;
+        }
+
+        else if (vec[middle] < value)
+        {
+            left = middle + 1;
+            // creation du sous tableau
+            std::vector<int> new_tab(vec.begin() + left, vec.end());
+            search(new_tab, value);
+        }
+
+        else
+        {
+            right = middle - 1;
+            // creation du sous tableau
+            std::vector<int> new_tab(vec.begin(), vec.begin() + right);
+            search(new_tab, value);
+        }
+    }
+
+    return -1;
+}
+
 int main()
 {
     // bubble sort
@@ -174,6 +215,17 @@ int main()
     std::sort(random_vect4.begin(), random_vect4.end());
     // display(random_vect4);
 
+    // dichotomie
+    std::vector<int> random_vect5{0, 1, 2, 3, 4, 5};
+    std::sort(random_vect5.begin(), random_vect5.end());
+    int value = 3;
+    int index = search(random_vect5, value);
+    std::cout << value << " dans le tableau vec 5 est à l'indice index : " << index << std::endl;
+    int value2 = 50;
+    int index2 = search(random_vect5, value2);
+    std::cout << value2 << " dans le tableau vec 5 est à l'indice index : " << index2 << std::endl;
+
+
     // TEST DE PERFORMANCE ----------------------------------
 
     // au vu des resultats, on peut voir que le tri de selection est le plus rapide, suivi du tri à bulles, puis la librairie std et enfin le tri de fusion.
@@ -196,5 +248,7 @@ int main()
     // conclusion :
     // la récursivité est bien plus rapide lorsque le vecteur est grand, mais elle utilise beaucoup de mémoire.
     // le tri de selection est le plus rapide pour un petit vecteur, mais il est très lent pour un grand vecteur.
+
+
 
 }

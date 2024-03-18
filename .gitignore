@@ -32,8 +32,8 @@
 *.app
 
 # fichiers et dossiers
-*/build
-*/bin
-*/.vscode
+*build
+*bin
+*.vscode
 
 
