@@ -12,6 +12,9 @@ void count_occurence(std::vector<int> const vect, int const value);
 void sort_vect(std::vector<int> const &vect);
 void sum_values(std::vector<int> const vect);
 
+int nb_letters(std::string const &str);
+std::vector<std::string> split_string(std::string const& str);
+
 
 // fonction utilisée dans le TD02
 std::vector<int> generate_random_vector(size_t const size, int const max = 100)
@@ -64,8 +67,32 @@ void sort_vect(std::vector<int> &vect)
 
 void sum_values(std::vector<int> const vect)
 {
-    const int sum {std::accumulate(vect.begin(), vect.end(), 0)};
+    const int sum{std::accumulate(vect.begin(), vect.end(), 0)};
     std::cout << "la somme totale des éléments du vecteur est : " << sum << std::endl;
+}
+
+// savoir si le caractère est un espace ou non
+auto const is_space = [](char letter)
+{
+    return letter == ' ';
+};
+
+// nombre de lettre dans le premier mot d'une phrase
+int nb_letters(std::string const &str)
+{
+    auto const it{std::find_if(str.begin(), str.end(), is_space)};
+    auto const nb_letters{std::distance(str.begin(), it)};
+    return nb_letters;
+}
+
+// ranger les mots dans un vecteur
+std::vector<std::string> split_string(std::string const& str)
+{
+    std::vector<std::string> vect_string{};
+    for (auto it{str.begin()}; it!=str.end(); it++){
+        std::string word{};
+    }
+    return vect_string;
 }
 
 int main()
@@ -89,8 +116,13 @@ int main()
     sort_vect(new_vect);
     display_vect(new_vect);
 
-    // calculer la somme des éléments du vecteur 
+    // calculer la somme des éléments du vecteur
     sum_values(new_vect);
+
+    // phrases
+    std::string phrase{"bonjour je suis une phrase"};
+    std::cout << "il y a " << nb_letters(phrase) << " lettres dans le premier mot de la phrase : " << phrase << std::endl;
+    return 0;
 
     return 0;
 }

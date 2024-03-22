@@ -4,10 +4,9 @@
 #include <sstream>
 #include <iterator>
 #include <stack>
-
-std::vector<std::string> split_string(std::string const &s);
-bool is_floating(std::string const &s);
-float npi_evaluate(std::vector<std::string> const &tokens);
+#include <charconv>
+#include <system_error>
+#include <cctype>
 
 // séparer les éléments(mots) de la chaîne de caractères en utilisant les espaces comme séparateurs
 std::vector<std::string> split_string(std::string const &s)
@@ -22,31 +21,54 @@ bool is_floating(std::string const &s)
 {
     for (int i{0}; i < s.size(); i++)
     {
-        if (s[i] == '.')
+        if (s[i] == '.' || std::isdigit(s[i]))
         {
             return true;
         }
     }
     return false;
 }
+
 // Écrire une fonction qui prend en paramètre un vecteur de chaînes de caractères représentant les tokens de l'expression en NPI, et qui retourne le résultat de l'expression.
 float npi_evaluate(std::vector<std::string> const &tokens)
 {
-    // std::stack<float> stack;
-    // for (int i{0}; i < tokens.size(); i++) {
-    //     if (is_floating(tokens[i])){
-    //         stack.push(tokens[i]);
-    //     } else {
-    //         float rightOperand{stack.top()};
-    //         stack.pop();
-    //         float leftOperand{stack.top()};
-    //         stack.pop();
-    //         float result{
-    //             rightOperand, tokens[i], leftOperand
-    //         };
-
-    //     }
-    // }
+    std::stack<float> stack;
+    for (int i{0}; i < tokens.size(); i++)
+    {
+        if (is_floating(tokens[i]))
+        {
+            float token{std::stof(tokens[i])};
+            stack.push(token);
+        }
+        else
+        {
+            float rightOperand{stack.top()};
+            stack.pop();
+            float leftOperand{stack.top()};
+            stack.pop();
+            if (tokens[i] == "+")
+            {
+                float result{leftOperand + rightOperand};
+                stack.push(result);
+            }
+            else if (tokens[i] == "-")
+            {
+                float result{leftOperand - rightOperand};
+                stack.push(result);
+            }
+            else if (tokens[i] == "*")
+            {
+                float result{leftOperand * rightOperand};
+                stack.push(result);
+            }
+            else if (tokens[i] == "/")
+            {
+                float result{leftOperand / rightOperand};
+                stack.push(result);
+            }
+        }
+    }
+    return stack.top();
 }
 
 int main()
@@ -56,9 +78,10 @@ int main()
 
     std::string user_npi;
     std::cout << "Entrez une expression en NPI : ";
-    std::cin >> user_npi;
+    std::getline(std::cin, user_npi);
 
     std::vector<std::string> new_npi = split_string(user_npi);
+    std::cout << npi_evaluate(new_npi) << std::endl;
 
     return 0;
 }

@@ -28,9 +28,7 @@ endforeach()
 
 
 # On indique que l'on souhaite faire un exécutable avec nos fichiers sources
-add_executable(ex1 ${SRC_FILES})
-add_executable(ex2 ${SRC_FILES})
+add_executable(main ${SRC_FILES})
 
 # le dossier contenant les fichiers d'en-tête pour notre executable helloImac
-target_include_directories(ex1 PUBLIC "src/")
-target_include_directories(ex2 PUBLIC "src/")
+target_include_directories(main PUBLIC "src/")
