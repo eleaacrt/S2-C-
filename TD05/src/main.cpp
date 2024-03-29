@@ -4,8 +4,7 @@
 
 size_t folding_string_hash(std::string const &s, size_t max);
 size_t folding_string_ordered_hash(std::string const &s, size_t max);
-size_t polynomial_rolling_hash(const std::string& s, size_t p, size_t m);
-
+size_t polynomial_rolling_hash(const std::string &s, size_t p, size_t m);
 
 size_t folding_string_hash(std::string const &s, size_t max)
 {
@@ -27,10 +26,14 @@ size_t folding_string_ordered_hash(std::string const &s, size_t max)
     return hash % max;
 }
 
-size_t polynomial_rolling_hash(const std::string& s, size_t p, size_t m){
+size_t polynomial_rolling_hash(const std::string &s, size_t p, size_t m)
+{
     size_t hash{0};
-    for (size_t i{0}; i < s.size(); i++){
-        hash += (s[i] * std::pow(p, i));
+    size_t new_pow{1};
+    for (size_t i{0}; i < s.size(); i++)
+    {
+        hash += (s[i] * new_pow);
+        new_pow *= p;
     }
     return hash % m;
 }

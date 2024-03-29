@@ -157,12 +157,12 @@ bool is_floating(std::string const &s)
 {
     for (int i{0}; i < s.size(); i++)
     {
-        if (s[i] == '.' || std::isdigit(s[i]))
+        if (!s[i] == '.' || !std::isdigit(s[i]))
         {
-            return true;
+            return false;
         }
     }
-    return false;
+    return true;
 }
 
 // Écrire une fonction qui prend en paramètre un vecteur de chaînes de caractères représentant les tokens de l'expression en NPI, et qui retourne le résultat de l'expression.
