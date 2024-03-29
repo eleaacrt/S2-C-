@@ -13,15 +13,16 @@ void sort_vect(std::vector<int> const &vect);
 void sum_values(std::vector<int> const vect);
 
 int nb_letters(std::string const &str);
-std::vector<std::string> split_string(std::string const& str);
+std::vector<std::string> split_string(std::string const &str);
 
+bool is_palindrome(std::string const &string);
 
 // fonction utilisée dans le TD02
 std::vector<int> generate_random_vector(size_t const size, int const max = 100)
 {
     std::vector<int> vec(size);
     std::generate(vec.begin(), vec.end(), [&max]()
-        { return std::rand() % max; });
+                  { return std::rand() % max; });
     return vec;
 }
 
@@ -86,13 +87,41 @@ int nb_letters(std::string const &str)
 }
 
 // ranger les mots dans un vecteur
-std::vector<std::string> split_string(std::string const& str)
+std::vector<std::string> split_string(std::string const &str)
 {
     std::vector<std::string> vect_string{};
-    for (auto it{str.begin()}; it!=str.end(); it++){
-        std::string word{};
+    for (auto it{str.begin()}; it <= str.end(); it++)
+    {
+        auto const it_space{std::find_if(it, str.end(), is_space)};
+        std::string word{it, it_space};
+        vect_string.push_back(word);
+        it = it_space;
     }
     return vect_string;
+}
+
+// afficher les éléments du vecteur de string
+void display_vect_string(std::vector<std::string> const vect)
+{
+    std::cout << "[ ";
+    for (auto it{vect.begin()}; it != vect.end(); it++)
+    {
+        std::cout << *it << ", ";
+    }
+    std::cout << "]";
+    std::cout << std::endl;
+}
+
+// palindrome
+bool is_palindrome(std::string const &str)
+{
+    if (std::equal(str.cbegin(), str.cbegin() + str.size() / 2, str.crbegin())){
+        std::cout << str << " est un palindrome" <<  std::endl;
+        return true;
+    } else {
+        std::cout << str << " n'est pas un palindrome" << std::endl;
+        return false;
+    }
 }
 
 int main()
@@ -122,7 +151,19 @@ int main()
     // phrases
     std::string phrase{"bonjour je suis une phrase"};
     std::cout << "il y a " << nb_letters(phrase) << " lettres dans le premier mot de la phrase : " << phrase << std::endl;
-    return 0;
+
+    // ranger les mots dans un vecteur
+    std::vector<std::string> vect_string{split_string(phrase)};
+    display_vect_string(vect_string);
+
+    // test palindrome
+    std::string const palindrome{"pouleeluop"};
+    std::string const palindrome2{"pouleluop"};
+    std::string const no_palindrome{"ozirfeojrnv"};
+
+    is_palindrome(palindrome);
+    is_palindrome(palindrome2);
+    is_palindrome(no_palindrome);
 
     return 0;
 }
