@@ -7,14 +7,22 @@
 #include <utility>
 #include <unordered_map>
 
-enum class CardKind {
+// -------------------------------------------------------------------------------------------
+
+// EXERCICE 3
+
+// -------------------------------------------------------------------------------------------
+
+enum class CardKind
+{
     Heart,
     Diamond,
     Club,
     Spade,
 };
 
-enum class CardValue {
+enum class CardValue
+{
     Two,
     Three,
     Four,
@@ -30,10 +38,121 @@ enum class CardValue {
     Ace,
 };
 
-struct Card {
+struct Card
+{
     CardKind kind;
     CardValue value;
+
+    size_t hash() const
+    {
+        return static_cast<size_t>(kind) * 13 + static_cast<size_t>(value);
+    }
 };
+
+bool operator==(Card card, Card const &card2)
+{
+    return (card.kind == card2.kind && card.value == card2.value);
+};
+
+size_t hash(Card card)
+{
+    return static_cast<size_t>(card.kind) * 13 + static_cast<size_t>(card.value);
+}
+
+namespace std
+{
+    template <>
+    struct hash<Card>
+    {
+        size_t operator()(Card const &card) const
+        {
+            return card.hash();
+        }
+    };
+}
+
+std::vector<Card> get_cards(size_t const size)
+{
+    std::vector<Card> cards{};
+    cards.reserve(size);
+    for (size_t i{0}; i < size; ++i)
+    {
+        cards.push_back({static_cast<CardKind>(rand() % 4), static_cast<CardValue>(rand() % 13)});
+    }
+    return cards;
+}
+
+std::unordered_map<Card, size_t> count_cards(std::vector<Card> const &cards)
+{
+    std::unordered_map<Card, size_t> count_cards{};
+    for (Card const &card : cards)
+    {
+        auto card_count{count_cards.find(card)};
+        if (card_count != count_cards.end())
+        {
+            card_count->second++;
+        }
+        else
+        {
+            count_cards.insert({card, 1});
+        }
+    }
+    return count_cards;
+}
+
+std::string card_name(Card const &card)
+{
+    std::string name{};
+
+    unsigned int card_value{(static_cast<unsigned int>(card.value) + 2) % 14};
+
+    if (card_value < 10)
+    {
+        name += '0' + card_value;
+    }
+    else if (card_value == 10)
+    {
+        name += "10";
+    }
+    else if (card_value == 11)
+    {
+        name += 'V';
+    }
+    else if (card_value == 12)
+    {
+        name += 'Q';
+    }
+    else if (card_value == 13)
+    {
+        name += 'K';
+    }
+
+    name += " of ";
+
+    if (card.kind == CardKind::Heart)
+    {
+        name += "Heart";
+    }
+    else if (card.kind == CardKind::Diamond)
+    {
+        name += "Diamond";
+    }
+    else if (card.kind == CardKind::Club)
+    {
+        name += "Club";
+    }
+    else if (card.kind == CardKind::Spade)
+    {
+        name += "Spade";
+    }
+    return name;
+}
+
+// -------------------------------------------------------------------------------------------
+
+// EXERCICE 1
+
+// -------------------------------------------------------------------------------------------
 
 size_t folding_string_hash(std::string const &s, size_t max);
 size_t folding_string_ordered_hash(std::string const &s, size_t max);
@@ -73,7 +192,12 @@ size_t polynomial_rolling_hash(const std::string &s, size_t p, size_t m)
     return hash % m;
 }
 
-// réparation de robots
+// -------------------------------------------------------------------------------------------
+
+// EXERCICE 2
+
+// -------------------------------------------------------------------------------------------
+
 std::string random_name(size_t size)
 {
     std::string name{""};
@@ -145,6 +269,12 @@ float sum_robots_fix(std::vector<float> &map)
 
 int main()
 {
+
+    // -------------------------------------------------------------------------------------------
+
+    // EXERCICE 1
+
+    // -------------------------------------------------------------------------------------------
     const int max{1024};
 
     // utilisation de la fonction de hashage sans prise en compte de la position du caractère
@@ -159,12 +289,27 @@ int main()
     std::cout << polynomial_rolling_hash("hello", 31, max) << std::endl;
     std::cout << polynomial_rolling_hash("olleh", 31, max) << std::endl;
 
-    // exercice 2 - robots
+    // -------------------------------------------------------------------------------------------
+
+    // EXERCICE 2
+
+    // -------------------------------------------------------------------------------------------
     std::vector<std::pair<std::string, float>> get_robots{get_robots_fix(500)};
     std::unordered_map<std::string, std::vector<float>> robots_fixes{robots_fixes_map(get_robots)};
 
     display_robots_fix(robots_fixes);
 
+    // -------------------------------------------------------------------------------------------
+
+    // EXERCICE 3
+
+    // -------------------------------------------------------------------------------------------
+    std::vector<Card> cards{get_cards(100)};
+    std::unordered_map<Card, size_t> count_cards_map{count_cards(cards)};
+    for (Card const &card : cards)
+    {
+        std::cout << card_name(card) << std::endl;
+    }
 
     return 0;
 }
