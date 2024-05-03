@@ -34,7 +34,6 @@ int main()
     root->insert(12);
     root->insert(17);
 
-
     std::cout << "Affichage de l'arbre :" << std::endl;
     pretty_print_left_right(*root);
 
@@ -42,13 +41,25 @@ int main()
 
     std::cout << "Affichage infixe de l'arbre :" << std::endl;
     root->display_infixe();
-    
+
     std::cout << "Affichage préfixe de l'arbre :" << std::endl;
     std::vector<Node const *> nodes = root->prefixe();
     for (Node const *node : nodes)
     {
         std::cout << node->value << std::endl;
     }
+
+    std::cout << "Affichage de la référence vers le pointeur du nœud le plus à gauche de l'arbre binaire :" << std::endl;
+    Node *most_left = root->most_left(root);
+    std::cout << most_left << " : " << most_left->value << std::endl;
+
+    std::cout << "Suppression du nœud 5 :" << std::endl;
+    root->remove(root, 15);
+    pretty_print_left_right(*root);
+
+    std::cout << "Suppression de l'arbre :" << std::endl;
+    root->delete_tree(root);
+    pretty_print_left_right(*root);
 
     return 0;
 }

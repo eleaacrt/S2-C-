@@ -19,8 +19,13 @@ struct Node
 
     void display_infixe() const;
 
-    std::vector<Node const*> prefixe() const;
+    std::vector<Node const *> prefixe() const;
 
+    Node *&most_left(Node *&node);
+
+    bool remove(Node*& node, int value);
+
+    void delete_tree(Node* node);
 };
 
 Node *create_node(int value);

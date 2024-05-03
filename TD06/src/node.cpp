@@ -77,9 +77,9 @@ void Node::display_infixe() const
     }
 }
 
-std::vector<Node const*> Node::prefixe() const
+std::vector<Node const *> Node::prefixe() const
 {
-    std::vector<Node const*> nodes;
+    std::vector<Node const *> nodes;
     nodes.push_back(this);
     if (left)
     {
@@ -92,4 +92,56 @@ std::vector<Node const*> Node::prefixe() const
         nodes.insert(nodes.end(), right_nodes.begin(), right_nodes.end());
     }
     return nodes;
+}
+
+Node *&Node::most_left(Node *&node)
+{
+    if (left)
+    {
+        return left->most_left(left);
+    }
+    return node;
+}
+
+bool Node::remove(Node *&node, int value)
+{
+    if (node == nullptr)
+    {
+        return false;
+    }
+    if (value < node->value)
+    {
+        return remove(node->left, value);
+    }
+    if (value > node->value)
+    {
+        return remove(node->right, value);
+    }
+    if (node->left == nullptr)
+    {
+        Node *right = node->right;
+        delete node;
+        node = right;
+        return true;
+    }
+    if (node->right == nullptr)
+    {
+        Node *left = node->left;
+        delete node;
+        node = left;
+        return true;
+    }
+    Node *&most_left = node->right->most_left(node->right);
+    node->value = most_left->value;
+    return remove(node->right, most_left->value);
+}
+
+void Node::delete_tree(Node *node)
+{
+    if (node)
+    {
+        node->delete_childs();
+        delete node;
+        node = nullptr;
+    }
 }
