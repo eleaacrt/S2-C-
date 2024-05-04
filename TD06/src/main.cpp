@@ -25,14 +25,17 @@ void pretty_print_left_right(Node const &node)
 
 int main()
 {
-    Node *root = create_node(10);
+    Node *root = create_node(5);
 
-    root->insert(5);
-    root->insert(15);
-    root->insert(2);
+    root->insert(3);
     root->insert(7);
-    root->insert(12);
-    root->insert(17);
+    root->insert(2);
+    root->insert(4);
+    root->insert(6);
+    root->insert(8);
+    root->insert(1);
+    root->insert(9);
+    root->insert(0);
 
     std::cout << "Affichage de l'arbre :" << std::endl;
     pretty_print_left_right(*root);
@@ -48,6 +51,14 @@ int main()
     {
         std::cout << node->value << std::endl;
     }
+
+    std::cout << "Affichage de la somme des valeurs de l'arbre :" << std::endl;
+    int sum = 0;
+    for (Node const *node : nodes)
+    {
+       sum += node->value;
+    }
+    std::cout << sum << std::endl;
 
     std::cout << "Affichage de la référence vers le pointeur du nœud le plus à gauche de l'arbre binaire :" << std::endl;
     Node *most_left = root->most_left(root);
