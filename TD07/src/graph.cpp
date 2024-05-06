@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <stack>
+#include <queue>
 #include "./graph.hpp"
 
 namespace Graph
@@ -64,4 +66,59 @@ Graph::WeightedGraph Graph::build_from_adjacency_matrix(const std::__1::vector<s
     }
 
     return graph;
+}
+
+void Graph::WeightedGraph::print_DFS(int start) const
+{
+    std::stack<int> stack;
+    std::vector<bool> visited(adjacency_list.size(), false);
+
+    stack.push(start);
+    visited[start] = true;
+
+    while (!stack.empty())
+    {
+        int current = stack.top();
+        stack.pop();
+
+        std::cout << current << " ";
+
+        for (auto const &edge : adjacency_list.at(current))
+        {
+            if (!visited[edge.to])
+            {
+                stack.push(edge.to);
+                visited[edge.to] = true;
+            }
+        }
+    }
+
+    std::cout << std::endl;
+}
+
+void Graph::WeightedGraph::print_BFS(int start) const
+{
+    std::queue<int> queue;
+    std::vector<bool> visited(adjacency_list.size(), false);
+
+    queue.push(start);
+    visited[start] = true;
+
+    while (!queue.empty())
+    {
+        int current = queue.front();
+        queue.pop();
+
+        std::cout << current << " ";
+
+        for (auto const &edge : adjacency_list.at(current))
+        {
+            if (!visited[edge.to])
+            {
+                queue.push(edge.to);
+                visited[edge.to] = true;
+            }
+        }
+    }
+    std::cout << std::endl;
 }

@@ -49,6 +49,9 @@ int main()
     } else {
         std::cout << "les graphes ne sont pas égaux" << std::endl;
     }
+
+    graph.print_DFS(0);
+    graph.print_BFS(0);
     
     return 0;
 }
